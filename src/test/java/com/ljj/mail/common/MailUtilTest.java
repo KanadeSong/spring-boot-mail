@@ -1,7 +1,7 @@
-package com.ljj.mail.common.util;
+package com.ljj.mail.common;
 
 
-import com.ljj.MailApplicationTests;
+import com.ljj.mail.MailApplicationTests;
 import org.junit.Test;
 import org.springframework.mail.SimpleMailMessage;
 

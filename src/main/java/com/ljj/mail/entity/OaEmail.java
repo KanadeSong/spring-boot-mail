@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  * <p>
- * OaEmail
+ * OaEmail oa_email表映射
  * </p>
  *
  * @author LeeJack
@@ -31,6 +31,11 @@ public class OaEmail implements Serializable {
     private String receiveEmail;
 
     /**
+     * 抄送人邮箱(多个逗号分开)
+     */
+    private String ccEmail;
+
+    /**
      * 主题
      */
     private String subject;
@@ -41,9 +46,9 @@ public class OaEmail implements Serializable {
     private String content;
 
     /**
-     * 模板
+     * 附件地址
      */
-    private String template;
+    private String attachment;
 
     /**
      * 发送时间
@@ -55,9 +60,10 @@ public class OaEmail implements Serializable {
 
     public OaEmail(Email mail) {
         this.receiveEmail = Arrays.toString(mail.getEmail());
+        this.ccEmail = Arrays.toString(mail.getCc());
         this.subject = mail.getSubject();
         this.content = mail.getContent();
-        this.template = mail.getTemplate();
+        this.attachment = Arrays.toString(mail.getAttachment());
         this.sendTime = new Timestamp(System.currentTimeMillis());
     }
 
@@ -66,7 +72,8 @@ public class OaEmail implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@SequenceGenerator(name = "TestSequence", sequenceName = "SEQ_Test", allocationSize=1)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
@@ -79,6 +86,15 @@ public class OaEmail implements Serializable {
     @Column(name = "receive_email", nullable = false, length = 500)
     public String getReceiveEmail() {
         return receiveEmail;
+    }
+
+    public void setCcEmail(String ccEmail) {
+        this.ccEmail = ccEmail;
+    }
+
+    @Column(name = "cc_email", length = 500)
+    public String getCcEmail() {
+        return ccEmail;
     }
 
     public void setSubject(String subject) {
@@ -94,19 +110,20 @@ public class OaEmail implements Serializable {
         this.content = content;
     }
 
-    @Column(name = "content", nullable = false, length = 65535)
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false, length = 65535)
     public String getContent() {
         return content;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
-    @Column(name = "template", nullable = false, length = 100)
-    public String getTemplate() {
-        return template;
+    @Column(name = "attachment", columnDefinition = "TEXT", length = 65535)
+    public String getAttachment() {
+        return attachment;
     }
+
 
     public void setSendTime(Timestamp sendTime) {
         this.sendTime = sendTime;

@@ -1,4 +1,5 @@
 server:
+  path: http://localhost:8080
   servlet:
     context-path: /
     session:
@@ -12,12 +13,17 @@ logging:
   level:
     root: info
 
+# 为 jasypt 配置解密秘钥
+jasypt:
+  encryptor:
+    password: LeeJack
+
 spring:
   # 使用 jasypt 加密密码，使用testGeneratePassword 生成加密密码，替换 ENC(加密密码)
   mail:
     host: smtp.qq.com
     username: 1549668665@qq.com
-    password: ENC(rvrooG/1osNu2bKQQzRoys0DFp+jn+HBrdJPnL7sxik=)
+    password: ENC(QNeM5D/ebDGKY5UPP0OvjrBYvjuP1ysFu8NJ6HG5M0o=)
     # JavaMail会话属性
     properties:
       mail:
@@ -28,27 +34,29 @@ spring:
           starttls:
             enable: true
             required: true
-  #freemarker 模板配置
-  freemarker:
-    template-loader-path: classpath:/static/templates/
-    suffix: .flt
-    enabled: true
-    cache: false
-    charset: UTF-8
-    content-type: text/html
-    allow-request-override: false
-    check-template-location: true
-    expose-request-attributes: false
-    expose-session-attributes: false
-    expose-spring-macro-helpers: false
-  # thymeleaf模板配置
-  thymeleaf:
-    cache: false
-    mode: LEGACYHTML5
-  # springmvc 静态资源访问路径
-  mvc:
-    static-path-pattern: /**
-  #数据源
+      #  thymeleaf:
+      #    prefix: classpath:/templates/
+      #  #freemarker 模板配置
+      #  freemarker:
+      #    template-loader-path: classpath:/static/templates/
+      #    suffix: .flt
+      #    enabled: true
+      #    cache: false
+      #    charset: UTF-8
+      #    content-type: text/html
+      #    allow-request-override: false
+      #    check-template-location: true
+      #    expose-request-attributes: false
+      #    expose-session-attributes: false
+      #    expose-spring-macro-helpers: false
+      #  # thymeleaf模板配置
+      #      thymeleaf:
+      #        cache: false
+      #        mode: LEGACYHTML5
+      # springmvc 静态资源访问路径
+    #      mvc:
+    #        static-path-pattern: /**
+    #数据源
   datasource:
     url: jdbc:mysql://localhost:3306/test
     username: root
@@ -63,12 +71,13 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-  #Redis
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #  #Redis
   redis:
     database: 1
     host: 127.0.0.1
     port: 6379
-#    password: redis
+    #    password: redis
     #连接池
     lettuce:
       pool:
@@ -77,36 +86,32 @@ spring:
         max-idle: 8
     #链接超时
     timeout: 30000
-
-# 特别注意：我们通过添加 spring-boot-starter-activemq 依赖即可默认采用内嵌的activeMQ，在生产环境下个人认为尽量还是采用外部服务，提高扩展性和维护性。
-# activemq 基础配置
-#spring.activemq.broker-url=tcp://47.94.232.109:61616
-# 生产环境设置密码
-#spring.activemq.user=admin
-#spring.activemq.password=123456
-#spring.activemq.in-memory=true
-#spring.activemq.pool.enabled=false
-
-#dubbo
-dubbo:
-  application:
-    id: mail
-    name: mail
-  registry:
-    address: zookeeper://127.0.0.1;2181
-    check: false
-  provider:
-    threads: 10
-    threadpool: fixed
-    loadbalance: roundrobin
-  protocol:
-    name: dubbo
-    port: -1
-  consumer:
-    check: false
-
-# 为 jasypt 配置解密秘钥
-jasypt:
-  encryptor:
-    password: LeeJack
-
+#
+## 特别注意：我们通过添加 spring-boot-starter-activemq 依赖即可默认采用内嵌的activeMQ，在生产环境下个人认为尽量还是采用外部服务，提高扩展性和维护性。
+## activemq 基础配置
+##spring.activemq.broker-url=tcp://47.94.232.109:61616
+## 生产环境设置密码
+##spring.activemq.user=admin
+##spring.activemq.password=123456
+##spring.activemq.in-memory=true
+##spring.activemq.pool.enabled=false
+#
+##dubbo
+#dubbo:
+#  application:
+#    id: mail
+#    name: mail
+#  registry:
+#    address: zookeeper://127.0.0.1;2181
+#    check: false
+#  provider:
+#    threads: 10
+#    threadpool: fixed
+#    loadbalance: roundrobin
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  consumer:
+#    check: false
+#
+#

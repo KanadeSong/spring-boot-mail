@@ -3,6 +3,8 @@ package com.ljj.mail.service;
 import com.ljj.mail.common.model.Email;
 import com.ljj.mail.common.model.Result;
 
+import javax.mail.MessagingException;
+
 /**
  * <p>
  * MailService
@@ -14,48 +16,54 @@ import com.ljj.mail.common.model.Result;
 public interface MailService {
     /**
      * 纯文本邮件
-     * @param mail
+     *
+     * @param mail 邮件对象包装
      * @throws Exception
      */
-    void send(Email mail) throws Exception;
+    void sendSimpleMail(Email mail) throws MessagingException;
 
     /**
      * 富文本邮件
-     * @param mail
-     * @throws Exception
+     *
+     * @param mail 邮件对象包装
+     * @throws MessagingException
      */
-    void sendHtml(Email mail) throws Exception;
+    void sendHtmlMail(Email mail) throws MessagingException;
+
 
     /**
-     * 模版发送 freemarker
-     * @param mail
-     * @throws Exception
+     * 发送带附件邮件
+     * @param email 邮件对象包装
+     * @throws MessagingException
      */
-    void sendFreemarker(Email mail) throws Exception;
+    void sendAttachmentMail(Email mail) throws MessagingException;
 
     /**
-     * 模版发送 thymeleaf(弃用、需要配合模板)
-     * @param mail
-     * @throws Exception
+     * 发送带静态资源邮件
+     * @param email 邮件对象包装
+     * @throws MessagingException
      */
-    void sendThymeleaf(Email mail) throws Exception;
+    void sendResourceMail(Email mail) throws MessagingException;
 
     /**
      * 队列
+     *
      * @param mail
      * @throws Exception
      */
-    void sendQueue(Email mail) throws Exception;
+    void sendQueue(Email mail) throws MessagingException, InterruptedException;
 
     /**
      * Redis 队列
+     *
      * @param mail
      * @throws Exception
      */
-    void sendRedisQueue(Email mail) throws Exception;
+    void sendRedisQueue(Email mail) throws MessagingException;
 
     /**
      * 邮件列表
+     *
      * @param mail
      * @return
      */

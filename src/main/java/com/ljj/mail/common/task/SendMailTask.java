@@ -1,7 +1,6 @@
 package com.ljj.mail.common.task;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,8 +13,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
+
 public class SendMailTask {
-    @Scheduled(cron = "/6 * * * * ?")
+    //@Scheduled(cron = "0/6 * * * * *")
     public void sendMail() {
         //每6秒执行一次
         log.info("邮件重新发送");

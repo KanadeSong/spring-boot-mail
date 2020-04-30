@@ -1,7 +1,11 @@
 package com.ljj.mail.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -10,8 +14,11 @@ import java.util.HashMap;
  * </p>
  *
  * @author LeeJack
+ * @JsonIgnoreProperties(ignoreUnknown = true) jackson 2.2.2 由于vo中缺少json的某个字段属性引起 UnrecognizedPropertyException
  * @date Created in 2020/4/29 0:35
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Email implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,68 +40,29 @@ public class Email implements Serializable {
 
     //选填
     /**
-     * 模板
+     * 抄送人
      */
-    private String template;
+    private String[] cc;
+
+    /**
+     * 附件位置
+     */
+    private String[] attachment;
+
     /**
      * 自定义参数
      */
     private HashMap<String, String> kvMap;
 
-
-    public Email() {
-        super();
+    @Override
+    public String toString() {
+        return "Email{" +
+                "email=" + Arrays.toString(email) +
+                ", subject='" + subject + '\'' +
+                ", content='" + content + '\'' +
+                ", cc=" + Arrays.toString(cc) +
+                ", attachment=" + Arrays.toString(attachment) +
+                ", kvMap=" + kvMap +
+                '}';
     }
-
-    public Email(String[] email, String subject, String content, String template,
-                 HashMap<String, String> kvMap) {
-        super();
-        this.email = email;
-        this.subject = subject;
-        this.content = content;
-        this.template = template;
-        this.kvMap = kvMap;
-    }
-
-
-    public String[] getEmail() {
-        return email;
-    }
-
-    public void setEmail(String[] email) {
-        this.email = email;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
-
-    public HashMap<String, String> getKvMap() {
-        return kvMap;
-    }
-
-    public void setKvMap(HashMap<String, String> kvMap) {
-        this.kvMap = kvMap;
-    }
-
 }

@@ -1,9 +1,9 @@
-package com.ljj.Conmmon;
+package com.ljj.mail.common;
 
-import com.ljj.MailApplicationTests;
-import com.ljj.mail.common.util.Constants;
+import com.ljj.mail.MailApplicationTests;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+
 
 /**
  * <p>

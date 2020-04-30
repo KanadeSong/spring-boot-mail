@@ -1,4 +1,4 @@
-package com.ljj.mail.common.util;
+package com.ljj.mail.common;
 
 /**
  * <p>

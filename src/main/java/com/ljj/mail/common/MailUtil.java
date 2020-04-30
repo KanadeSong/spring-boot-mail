@@ -1,4 +1,4 @@
-package com.ljj.mail.common.util;
+package com.ljj.mail.common;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -89,6 +89,23 @@ public class MailUtil {
         p.setProperty("mail.smtp.auth", "true");
         sender.setJavaMailProperties(p);
         return sender;
+    }
+
+
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("a");
+        for (int i = 0; i < 10000; i++) {
+            sb.append(i+" ");
+            if (i%100 == 1){
+                sb.append("\n");
+            }
+        }
+        System.out.println(sb.toString());
+    }
+
+    private static String replace(String filename) {
+        //.$|()[{^?*+\等特殊符号不在匹配中，需要转移符\
+        return filename.substring(0, filename.lastIndexOf("."));
     }
 
 }

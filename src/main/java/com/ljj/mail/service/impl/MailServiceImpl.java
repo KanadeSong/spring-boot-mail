@@ -1,33 +1,29 @@
 package com.ljj.mail.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.ljj.mail.common.dynamicquery.DynamicQuery;
 import com.ljj.mail.common.model.Email;
 import com.ljj.mail.common.model.Result;
 import com.ljj.mail.common.queue.MailQueue;
-import com.ljj.mail.common.util.Constants;
 import com.ljj.mail.entity.OaEmail;
 import com.ljj.mail.repository.MailRepository;
 import com.ljj.mail.service.MailService;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.util.ResourceUtils;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -41,20 +37,21 @@ import java.util.Map;
 @Slf4j
 public class MailServiceImpl implements MailService {
 
-    static {
-        System.setProperty("mail.mime.splitlongparameters", "false");
-    }
+
+//    static {
+//        System.setProperty("mail.mime.splitlongparameters", "false");
+//    }
 
     /**
      * 发送者
      */
-    @Value("spring.mail.username")
-    public String userName;
+    @Value("${spring.mail.username}")
+    public String from;
 
     /**
      * 发送者
      */
-    @Value("server.path")
+    @Value("${server.path}")
     public String path;
 
     @Autowired
@@ -82,88 +79,124 @@ public class MailServiceImpl implements MailService {
     private SpringTemplateEngine templateEngine;
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void send(Email mail) throws Exception {
-        log.info("发送文本邮件：{}", mail.getContent());
+    public void sendSimpleMail(Email mail) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(userName);
+        message.setFrom(from);
         message.setTo(mail.getEmail());
         message.setSubject(mail.getSubject());
         message.setText(mail.getContent());
+
+        String[] cc = mail.getCc();
+        if (ArrayUtil.isNotEmpty(cc)) {
+            message.setCc(cc);
+        }
         mailSender.send(message);
 
-    }
-
-    @Override
-    public void sendHtml(Email mail) throws Exception {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        //这里可以自定义发信名称
-        helper.setFrom(userName, "LeeJack");
-        helper.setTo(mail.getEmail());
-        helper.setSubject(mail.getSubject());
-        helper.setText("<html><body><img src=\"cid:springcloud\" ></body></html>",
-                true);
-        // 发送图片
-        File file = ResourceUtils.getFile("classpath:static"
-                + Constants.SF_FILE_SEPARATOR + "image"
-                + Constants.SF_FILE_SEPARATOR + "springcloud.png");
-        // 发送附件
-        file = ResourceUtils.getFile("classpath:static"
-                + Constants.SF_FILE_SEPARATOR + "file"
-                + Constants.SF_FILE_SEPARATOR + "关注科帮网获取更多源码.zip");
-        helper.addAttachment("LeeJack", file);
-        mailSender.send(message);
-    }
-
-    @Override
-    public void sendFreemarker(Email mail) throws Exception {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        //这里可以自定义发信名称比如：爪哇笔记
-        helper.setFrom(userName, "LeeJack");
-        helper.setTo(mail.getEmail());
-        helper.setSubject(mail.getSubject());
-        Map<String, Object> model = new HashMap<>();
-        model.put("mail", mail);
-        model.put("path", path);
-        Template template = configuration.getTemplate(mail.getTemplate());
-        String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-        helper.setText(text, true);
-        mailSender.send(message);
-        mail.setContent(text);
         OaEmail oaEmail = new OaEmail(mail);
         mailRepository.save(oaEmail);
+
+        log.info("发送人邮箱：{} 发出了文本邮件：{}", from, mail.getContent());
     }
 
-    /**
-     * 弃用
-     */
     @Override
-    public void sendThymeleaf(Email mail) throws Exception {
+    public void sendHtmlMail(Email mail) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom(userName);
+
+        helper.setFrom(from);
         helper.setTo(mail.getEmail());
         helper.setSubject(mail.getSubject());
-        Context context = new Context();
-        context.setVariable("email", mail);
-        String text = templateEngine.process(mail.getTemplate(), context);
-        helper.setText(text, true);
+        helper.setText(mail.getContent(), true);
+
+        String[] cc = mail.getCc();
+        if (ArrayUtil.isNotEmpty(cc)) {
+            helper.setCc(cc);
+        }
         mailSender.send(message);
+
+        OaEmail oaEmail = new OaEmail(mail);
+        mailRepository.save(oaEmail);
+
+
+        log.info("发送人邮箱：{} 发出了Html邮件：{}", from, mail.getContent());
+
     }
 
     @Override
-    public void sendQueue(Email mail) throws Exception {
+    public void sendAttachmentMail(Email mail) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setFrom(from);
+        helper.setTo(mail.getEmail());
+        helper.setSubject(mail.getSubject());
+        helper.setText(mail.getContent(), true);
+
+        String[] cc = mail.getCc();
+        if (ArrayUtil.isNotEmpty(cc)) {
+            helper.setCc(cc);
+        }
+
+        String[] filePath = mail.getAttachment();
+        if (filePath != null) {
+            for (int i = 0; i < filePath.length; i++) {
+                FileSystemResource res = new FileSystemResource(new File(filePath[i]));
+                helper.addAttachment(res.getFilename(), res);
+            }
+        }
+        mailSender.send(message);
+
+        OaEmail oaEmail = new OaEmail(mail);
+        mailRepository.save(oaEmail);
+
+
+        log.info("发送人邮箱：{} 发出带附件的邮件：{}", mail.getContent(), from);
+    }
+
+    @Override
+    public void sendResourceMail(Email mail) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setFrom(from);
+        helper.setTo(mail.getEmail());
+        helper.setSubject(mail.getSubject());
+        helper.setText(mail.getContent(), true);
+
+        String[] cc = mail.getCc();
+        if (ArrayUtil.isNotEmpty(cc)) {
+            helper.setCc(cc);
+        }
+
+        String[] filePath = mail.getAttachment();
+        if (filePath != null) {
+            for (int i = 0; i < filePath.length; i++) {
+                FileSystemResource res = new FileSystemResource(new File(filePath[i]));
+                helper.addInline(res.getFilename(), res);
+            }
+        }
+        mailSender.send(message);
+
+        OaEmail oaEmail = new OaEmail(mail);
+        mailRepository.save(oaEmail);
+
+
+        log.info("发送人邮箱：{} 发出静态资源的邮件：{}", mail.getContent(), from);
+    }
+
+    @Override
+    public void sendQueue(Email mail) throws MessagingException, InterruptedException {
         MailQueue.getMailQueue().produce(mail);
     }
 
     @Override
-    public void sendRedisQueue(Email mail) throws Exception {
+    public void sendRedisQueue(Email mail) throws MessagingException {
         //redis发布订阅模式
         redisTemplate.convertAndSend("mail", mail);
+        log.info("发送到 redis消息队列 mail:{}", mail);
     }
 
     @Override
@@ -171,4 +204,6 @@ public class MailServiceImpl implements MailService {
         List<OaEmail> list = mailRepository.findAll();
         return Result.ok(list);
     }
+
+
 }

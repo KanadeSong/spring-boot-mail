@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * <p>
- * RedisListener
+ * RedisListener 监听redis队列
  * </p>
  *
  * @author LeeJack
@@ -27,28 +27,46 @@ public class RedisListener {
     RedisMessageListenerContainer container(
             RedisConnectionFactory connectionFactory,
             MessageListenerAdapter listenerAdapter) {
-        log.info("启动redis监听主题mail!");
+        log.info("启动监听");
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("mail"));
         return container;
     }
 
+    /**
+     * 拦截到redis队列的消息执行 Receiver的方法
+     *
+     * @param receiver
+     * @return
+     */
     @Bean
     MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 
+    /**
+     * @param latch
+     * @return
+     */
     @Bean
-    Receiver receiver(CountDownLatch latch) {
+    Receiver Receiver(CountDownLatch latch) {
         return new Receiver(latch);
     }
 
+
+    /**
+     * @return
+     */
     @Bean
     CountDownLatch latch() {
         return new CountDownLatch(1);
     }
 
+    /**
+     * @param connectionFactory
+     * @return
+     */
     @Bean
     StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
         return new StringRedisTemplate(connectionFactory);

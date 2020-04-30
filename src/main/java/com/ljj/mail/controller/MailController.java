@@ -28,7 +28,7 @@ public class MailController {
     @PostMapping("send")
     public Result send(Email mail) {
         try {
-            mailService.sendFreemarker(mail);
+            mailService.sendHtmlMail(mail);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error();

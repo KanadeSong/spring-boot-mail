@@ -29,6 +29,7 @@ public class ConsumeMailQueue {
 
     @PostConstruct
     public void startThread() {
+        log.info("ConsumeMailQueue 邮件消费队列服务已启动！");
         // 两个大小的固定线程池
         ThreadPoolExecutor e = new ThreadPoolExecutor(
                 2,
@@ -60,8 +61,8 @@ public class ConsumeMailQueue {
                 try {
                     Email mail = MailQueue.getMailQueue().consume();
                     if (mail != null) {
+                        mailService.sendHtmlMail(mail);
                         log.info("剩余邮件总数：{}", MailQueue.getMailQueue().size());
-                        mailService.send(mail);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
