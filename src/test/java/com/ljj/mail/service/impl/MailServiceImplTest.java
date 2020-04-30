@@ -3,7 +3,9 @@ package com.ljj.mail.service.impl;
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.ljj.mail.MailApplicationTests;
 import com.ljj.mail.common.model.Email;
+import com.ljj.mail.common.model.Result;
 import com.ljj.mail.common.queue.ConsumeMailQueue;
+import com.ljj.mail.entity.OaEmail;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -19,6 +21,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -148,5 +151,10 @@ public class MailServiceImplTest extends MailApplicationTests {
 
     @Test
     public void listMail() {
+        Result result = mailService.listMail(new Email());
+        List<OaEmail> emails = (List<OaEmail>) result.get("msg");
+        for (OaEmail email : emails) {
+            log.info(email.toString());
+        }
     }
 }

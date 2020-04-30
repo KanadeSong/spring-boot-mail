@@ -134,4 +134,16 @@ public class OaEmail implements Serializable {
         return sendTime;
     }
 
+    @Override
+    public String toString() {
+        return "OaEmail{" +
+                "id=" + id +
+                ", receiveEmail='" + receiveEmail + '\'' +
+                ", ccEmail='" + ccEmail + '\'' +
+                ", subject='" + subject + '\'' +
+                ", content='" + content + '\'' +
+                ", attachment='" + attachment + '\'' +
+                ", sendTime=" + sendTime +
+                '}';
+    }
 }

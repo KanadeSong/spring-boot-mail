@@ -39,7 +39,7 @@ public class Receiver {
 
             try {
                 Email email = mapper.readValue(message, Email.class);
-                //mailService.sendHtmlMail(email);
+                mailService.sendHtmlMail(email);
                 String content = email.getContent();
                 log.info("发送邮件完成!!latch:{} 邮件内容为：{}", latch, content.length() < 200 ? content :
                         content.substring(0, 200));
