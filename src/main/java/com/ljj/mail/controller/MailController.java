@@ -1,10 +1,10 @@
 package com.ljj.mail.controller;
 
-import com.ljj.mail.common.model.Email;
-import com.ljj.mail.common.model.Result;
-import com.ljj.mail.service.impl.MailServiceImpl;
+import com.ljj.mail.dubbo.model.Email;
+import com.ljj.mail.dubbo.model.Result;
+import com.ljj.mail.dubbo.service.MailService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/mail")
 public class MailController {
 
-    @Autowired
-    private MailServiceImpl mailService;
+    @Reference(version = "1.0.0")
+    private MailService mailService;
 
     @PostMapping("send")
     public Result send(Email mail) {

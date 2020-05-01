@@ -1,6 +1,6 @@
 package com.ljj.mail.common.queue;
 
-import com.ljj.mail.common.model.Email;
+import com.ljj.mail.dubbo.model.Email;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

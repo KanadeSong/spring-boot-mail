@@ -4,7 +4,7 @@ server:
     context-path: /
     session:
       timeout: 60
-  port: 8080
+  port: 8090
   tomcat:
     max-threads: 100
     uri-encoding: UTF-8
@@ -86,6 +86,8 @@ spring:
         max-idle: 8
     #链接超时
     timeout: 30000
+  application:
+    name: spring-mail
 #
 ## 特别注意：我们通过添加 spring-boot-starter-activemq 依赖即可默认采用内嵌的activeMQ，在生产环境下个人认为尽量还是采用外部服务，提高扩展性和维护性。
 ## activemq 基础配置
@@ -96,22 +98,24 @@ spring:
 ##spring.activemq.in-memory=true
 ##spring.activemq.pool.enabled=false
 #
-##dubbo
-#dubbo:
-#  application:
-#    id: mail
-#    name: mail
-#  registry:
-#    address: zookeeper://127.0.0.1;2181
-#    check: false
-#  provider:
-#    threads: 10
-#    threadpool: fixed
-#    loadbalance: roundrobin
-#  protocol:
-#    name: dubbo
-#    port: -1
-#  consumer:
-#    check: false
-#
-#
+# dubbo相关配置
+dubbo:
+  application:
+    id: mail-id
+    name: mail-name
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    check: false
+  provider:
+    threads: 10
+    threadpool: fixed
+    loadbalance: roundrobin
+    delay: -1
+  # 开放获取这台服务器服务的 dubbo端口
+  protocol:
+    name: dubbo
+    port: -1
+  consumer:
+    check: false
+
+

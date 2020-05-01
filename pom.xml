@@ -20,10 +20,10 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
 
         <!-- 实现web功能 -->
         <dependency>
@@ -31,17 +31,18 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- 模版 -->
+        <!-- thymeleaf 模版 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
+        <!-- thymeleaf 模版解析依赖-->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
         </dependency>
 
+        <!-- 工具类 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
@@ -68,11 +69,6 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- thymeleaf 模版 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
         <!-- freemarker 模版 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,78 +81,81 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; 升级 apache dubbo &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.dubbo</groupId>-->
-<!--            <artifactId>dubbo</artifactId>-->
-<!--            <version>2.7.3</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>javassist</artifactId>-->
-<!--                    <groupId>org.javassist</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!-- 升级 apache dubbo -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.dubbo</groupId>-->
+        <!--            <artifactId>dubbo</artifactId>-->
+        <!--            <version>2.7.3</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>2.7.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>javassist</artifactId>
+                    <groupId>org.javassist</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-<!--        &lt;!&ndash; Zookeeper &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.zookeeper</groupId>-->
-<!--            <artifactId>zookeeper</artifactId>-->
-<!--            <version>3.5.5</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>slf4j-api</artifactId>-->
-<!--                    <groupId>org.slf4j</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>slf4j-log4j12</artifactId>-->
-<!--                    <groupId>org.slf4j</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.apache.curator</groupId>-->
-<!--            <artifactId>curator-framework</artifactId>-->
-<!--            <version>4.2.0</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>zookeeper</artifactId>-->
-<!--                    <groupId>org.apache.zookeeper</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>guava</artifactId>-->
-<!--                    <groupId>com.google.guava</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.curator</groupId>-->
-<!--            <artifactId>curator-recipes</artifactId>-->
-<!--            <version>4.2.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.dubbo</groupId>-->
-<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
-<!--            <version>2.7.3</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.netty</groupId>-->
-<!--            <artifactId>netty-all</artifactId>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; json-lib &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>net.sf.json-lib</groupId>-->
-<!--            <artifactId>json-lib</artifactId>-->
-<!--            <version>2.4</version>-->
-<!--            <classifier>jdk15</classifier>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>commons-lang</artifactId>-->
-<!--                    <groupId>commons-lang</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>&lt;!&ndash;指定jdk版本&ndash;&gt;-->
-<!--        </dependency>-->
+        <!-- zookeeper 客户端 jar 包依赖-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.zookeeper</groupId>-->
+        <!--            <artifactId>zookeeper</artifactId>-->
+        <!--            <version>3.5.5</version>-->
+        <!--            <exclusions>-->
+        <!--                &lt;!&ndash; SpringBoot 已经引入了slf4j日志相关依赖 &ndash;&gt;-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>slf4j-api</artifactId>-->
+        <!--                    <groupId>org.slf4j</groupId>-->
+        <!--                </exclusion>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>slf4j-log4j12</artifactId>-->
+        <!--                    <groupId>org.slf4j</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+
+        <!-- Curator 是 Netflix 开源的一个 Zookeeper 客户端实现 -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>4.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
+
+        <!-- json-lib -->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-lang</artifactId>
+                    <groupId>commons-lang</groupId>
+                </exclusion>
+            </exclusions><!--指定jdk版本-->
+        </dependency>
+
         <!-- 构建Restful API -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -179,21 +178,21 @@
             <version>2.7.0</version>
         </dependency>
         <!-- activemq -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-activemq</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-activemq</artifactId>-->
+        <!--        </dependency>-->
         <!--RPC 限流-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.csp</groupId>-->
-<!--            <artifactId>sentinel-apache-dubbo-adapter</artifactId>-->
-<!--            <version>1.6.3</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.csp</groupId>-->
-<!--            <artifactId>sentinel-transport-simple-http</artifactId>-->
-<!--            <version>1.6.3</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba.csp</groupId>-->
+        <!--            <artifactId>sentinel-apache-dubbo-adapter</artifactId>-->
+        <!--            <version>1.6.3</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba.csp</groupId>-->
+        <!--            <artifactId>sentinel-transport-simple-http</artifactId>-->
+        <!--            <version>1.6.3</version>-->
+        <!--        </dependency>-->
 
         <!-- jasypt 配置文件加解密 -->
         <dependency>
@@ -225,6 +224,7 @@
     </dependencies>
 
     <build>
+        <finalName>spring-boot-mail</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

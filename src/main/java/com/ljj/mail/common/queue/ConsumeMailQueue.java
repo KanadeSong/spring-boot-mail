@@ -1,7 +1,7 @@
 package com.ljj.mail.common.queue;
 
-import com.ljj.mail.common.model.Email;
-import com.ljj.mail.service.impl.MailServiceImpl;
+import com.ljj.mail.dubbo.model.Email;
+import com.ljj.mail.dubbo.service.impl.MailServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

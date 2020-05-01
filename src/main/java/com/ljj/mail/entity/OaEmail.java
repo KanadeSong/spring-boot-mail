@@ -1,6 +1,6 @@
 package com.ljj.mail.entity;
 
-import com.ljj.mail.common.model.Email;
+import com.ljj.mail.dubbo.model.Email;
 
 import javax.persistence.*;
 import java.io.Serializable;

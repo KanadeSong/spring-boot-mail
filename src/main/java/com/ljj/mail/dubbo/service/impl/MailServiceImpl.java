@@ -1,15 +1,16 @@
-package com.ljj.mail.service.impl;
+package com.ljj.mail.dubbo.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.ljj.mail.common.dynamicquery.DynamicQuery;
-import com.ljj.mail.common.model.Email;
-import com.ljj.mail.common.model.Result;
+import com.ljj.mail.dubbo.model.Email;
+import com.ljj.mail.dubbo.model.Result;
 import com.ljj.mail.common.queue.MailQueue;
 import com.ljj.mail.entity.OaEmail;
 import com.ljj.mail.repository.MailRepository;
-import com.ljj.mail.service.MailService;
+import com.ljj.mail.dubbo.service.MailService;
 import freemarker.template.Configuration;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -17,7 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author LeeJack
  * @date Created in 2020/4/29 1:49
  */
-@Service
+@Service(version = "1.0.0")
 @Slf4j
 public class MailServiceImpl implements MailService {
 
@@ -83,6 +83,12 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendSimpleMail(Email mail) {
+        try {
+            Thread.sleep(20*1000);
+            log.info("当前{}线程休眠了20s",Thread.currentThread().getName());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(mail.getEmail());

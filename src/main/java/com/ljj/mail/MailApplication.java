@@ -1,19 +1,24 @@
 package com.ljj.mail;
 
-import com.ljj.mail.service.MailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
+/**
+ * <p>
+ * MailApplication 邮件服务系统启动类
+ * </p>
+ *
+ * @author LeeJack
+ */
 @SpringBootApplication
+@EnableDubbo
 @EnableScheduling
 @Slf4j
 public class MailApplication {
-
-    @Autowired
-    private MailService mailService;
 
     public static void main(String[] args) {
 

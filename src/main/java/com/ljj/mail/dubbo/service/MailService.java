@@ -1,7 +1,7 @@
-package com.ljj.mail.service;
+package com.ljj.mail.dubbo.service;
 
-import com.ljj.mail.common.model.Email;
-import com.ljj.mail.common.model.Result;
+import com.ljj.mail.dubbo.model.Email;
+import com.ljj.mail.dubbo.model.Result;
 
 import javax.mail.MessagingException;
 

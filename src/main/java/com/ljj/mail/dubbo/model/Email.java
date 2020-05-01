@@ -1,4 +1,4 @@
-package com.ljj.mail.common.model;
+package com.ljj.mail.dubbo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

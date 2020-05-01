@@ -1,10 +1,11 @@
-package com.ljj.mail.service.impl;
+package com.ljj.mail.service.dubbo;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.ljj.mail.MailApplicationTests;
-import com.ljj.mail.common.model.Email;
-import com.ljj.mail.common.model.Result;
+import com.ljj.mail.dubbo.model.Email;
+import com.ljj.mail.dubbo.model.Result;
 import com.ljj.mail.common.queue.ConsumeMailQueue;
+import com.ljj.mail.dubbo.service.impl.MailServiceImpl;
 import com.ljj.mail.entity.OaEmail;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
